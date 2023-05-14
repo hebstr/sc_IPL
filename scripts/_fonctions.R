@@ -5,7 +5,7 @@ opts_set <- \(suivi_an = 1, suivi_jr = suivi_an * 365,
               yes = "Yes", no = "No", na = "Missing data",
               int_sep = ":", out_sep = ";", ci_sep = ";",
               ci_lim = "[", ci_level = "95", ci_term = "%CI",
-              p_format = ~ style_pvalue(.x, digits = 3),
+              p_format = ~ style_pvalue(.x, digits = 3), p_seuil = 0.05,
               font_alpha = "Bahnschrift", font_num = "calibri",
               color_ref = "#999999", color_back_light = "white",
               color_back_dark = "#292929", color_front_light = "#e1f6ff",
@@ -43,13 +43,13 @@ list(color = list(ref = color_ref,
 
 opts <- tibble(suivi_an, suivi_jr, fdr, fdr_start, fdr_suffix, output_suffix)
 
-assign("opts", list(set = c(opts, p_format = p_format, lab, sep, ci, font, color)), envir = .GlobalEnv)
+assign("opts", list(set = c(opts, p_format = p_format, p_seuil = p_seuil, lab, sep, ci, font, color)), envir = .GlobalEnv)
 
 }
 
 #-------------------------------------------------------------------------------------------------------------
 
-opts_tab <- \(base, uv, mv, vargrp = NULL, surv, strata = NULL, abb, abb_fdr = NULL, note,
+opts_tab <- \(base, uv, vargrp = NULL, surv, strata = NULL, abb, abb_fdr = NULL, note,
               var_fdr = opts_vargrp$fdr, before = "sympt_type") {
   
     add_vec <- \(to, var, before) {
@@ -78,7 +78,7 @@ with_abb <- expr(with(opts_abb, !!abb))
 with_abb_fdr <- expr(with(opts_abb, c(!!abb_fdr, !!abb)))
 
 if (is_false(opts$set$fdr))
-list(input = list(base = base, uv = uv, mv = mv),
+list(input = list(base = base, uv = uv),
      vargrp = group(vargrp),
      model_obj = model_obj(surv, strata),
      abb = eval(with_abb),
@@ -86,8 +86,7 @@ list(input = list(base = base, uv = uv, mv = mv),
 
 else
 list(input = (list(base = add_vec(to = base, var = var_fdr, before = before),
-                   uv = add_vec(to = uv, var = var_fdr, before = before),
-                   mv = add_vec(to = mv, var = var_fdr[c(1,2,4)], before = before))),
+                   uv = add_vec(to = uv, var = var_fdr, before = before))),
      vargrp = group(vargrp, var_fdr),
      model_obj = model_obj(surv, strata),
      abb = eval(with_abb_fdr),
@@ -251,9 +250,6 @@ y <- substitute(x)
 assign_tab <- \(name, ext, obj)
 assign(paste0(name, ext), obj, envir = .GlobalEnv)
 
-if (class %in% c("tbl_uvregression", "tbl_regression", "tbl_merge"))
-    y <- paste0(y, ".gts")
-
 if (class != "gt_tbl") {
   
     body_style <- list(assign_tab(y, "_body", x$table_body),
@@ -313,7 +309,11 @@ mutate(x, across(c(estimate, contains("conf")), ~ format(round(. * multi, 2), ns
 
 tab_format <- \(x, hide_n = TRUE) {
 
-if (class(x)[1] %in% c("tbl_uvregression", "tbl_regression")) {
+x <-
+x %>% modify_header(label ~ "**Characteristics**", p.value ~ "**p**") %>%
+      bold_p(t = opts$set$p_seuil)
+  
+if (str_detect(class(x)[1], "reg")) {
 
     x <-  
     x %>% modify_table_body(~ .x %>%
@@ -361,19 +361,14 @@ if (class(x)[1] %in% c("tbl_uvregression", "tbl_regression")) {
         
     }
 
-x <-
-x %>% modify_header(label ~ "**Characteristic**", p.value ~ "**p**") %>%
-      modify_footnote(everything() ~ NA, abbreviation = TRUE) %>%
-      bold_p(t = 0.05)
+x <- x %>% modify_footnote(everything() ~ NA, abbreviation = TRUE)
   
 } else {
   x <-
   x %>% modify_table_body(~ .x %>%
           mutate(across(contains("stat_"), ~ ifelse(str_starts(., "0"), "—", .)))) %>%
-        modify_header(c(stat_1, stat_2) ~ "**{level}<br>(n={n}, {style_percent(p)}%)**",
-                      p.value ~ "**p**") %>%
-        modify_footnote(everything() ~ NA) %>%
-        bold_p(t = 0.05)
+        modify_header(c(stat_1, stat_2) ~ "**{level}<br>(n={n}, {style_percent(p)}%)**") %>%
+        modify_footnote(everything() ~ NA)
   
   assign(".n", abbr(n ~ "number of events"), envir = .GlobalEnv)
   assign(".SD", abbr(SD ~ "standard deviation"), envir = .GlobalEnv)

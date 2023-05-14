@@ -42,7 +42,6 @@ opts_tab <-
   opts_tab(base = c("sexe", "age_cont","sympt_type", opts_vargrp$maj_comp, "acs_type", "pontage_pdt2", "angiop_pdt2"),
            uv = c("sexe", "age_incr", "lieu_recueil", "sympt_type", opts_vargrp$maj_comp, "acs_type", "pontage_pdt2",
                   "pontage_sortie", "angiop_pdt2", "angiop_sortie"),
-           mv = c("sexe", "age_incr", "sympt_type", opts_vargrp$maj_comp, "pontage_pdt2", "angiop_sortie"),
            vargrp = opts_vargrp$maj_comp,
            abb = c(ACS, STEMI, NSTEMI),
            abb_fdr = BMI,
@@ -228,9 +227,19 @@ knitr::kable(
 assign(paste0(y, ".1"), x[[1]], envir = .GlobalEnv)
 assign(paste0(y, ".2"), x_rec_csr, envir = .GlobalEnv)
 
+input_mv <-
+  opts$tab$input$uv[!opts$tab$input$uv %in% opts$vargrp$strata] %>%
+  map_dfr(~ tidy(coxph(reformulate(.x, opts$tab$model_obj$surv), x[[1]])))
+
+input_mv <-
+  unique(filter(input_mv, p.value <= 0.05)) %>% 
+  mutate(term = str_extract(term, ".+(?=[:upper:][:lower:])|.+(?=$)"))
+
 opts_tab_model <-
-list(uv = coxph(reformulate("sexe", opts_tab$model_obj$surv), x[[1]]),
-     mv = coxph(reformulate(c(opts$tab$input$mv, opts$tab$model_obj$strata), opts$tab$model_obj$surv), x[[1]]))
+list(uv = coxph(reformulate("sexe",
+                            opts_tab$model_obj$surv), x[[1]]),
+     mv = coxph(reformulate(c(unique(c(opts$tab$input$uv[1], input_mv$term)), opts$tab$model_obj$strata),
+                            opts$tab$model_obj$surv), x[[1]]))
 
     note_mv <- \(model) {
     

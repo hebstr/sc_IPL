@@ -15,6 +15,7 @@ library(scales)
 library(survival)
 library(ggsurvfit)
 library(tidycmprsk)
+library(webshot)
 
 rm(list = ls())
 load("~/dfp_excl7_09-17/dfp_excl7_09-17.RData")

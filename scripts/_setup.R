@@ -46,7 +46,7 @@ opts_tab <-
            vargrp = opts_vargrp$maj_comp,
            abb = c(ACS, STEMI, NSTEMI),
            abb_fdr = BMI,
-           note = list(p = "P-values were bolded if they were less than or equal to 0.05.",
+           note = list(p = "P-values were bolded if less than or equal to 0.05.",
                        vargrp = "At least one occurrence.",
                        strata = expr(glue("Multivariable Cox regression model stratified
                                           on {str_label(d, opts$vargrp$strata)}.")),

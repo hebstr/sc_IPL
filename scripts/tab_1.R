@@ -18,7 +18,6 @@ d.1[opts$tab$input$base] %>%
                     all_categorical() ~ "chisq.test.no.correct"),
         test.args = all_tests("t.test") ~ list(var.equal = TRUE),
         pvalue_fun = opts$set$p_format) %>%
-  add_overall(col_label = "**Total<br>(n={N})**") %>%
   add_stat_label(label = all_continuous() ~ "mean±SD") %>% 
   tab_format()
 

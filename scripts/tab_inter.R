@@ -33,8 +33,6 @@ filter(d, rec == 1 & tt_rec <= opts$set$suivi_jr) %>%
                                  all_categorical() ~ "chisq.test.no.correct"),
                      test.args = all_tests("t.test") ~ list(var.equal = TRUE),
                      pvalue_fun = opts$set$p_format) %>%
-               add_overall(col_label = "**Total<br>(N={N})**",
-                           statistic = all_categorical() ~ "{n} ({p})") %>%
                add_stat_label(label = list(all_continuous() ~ "mean±SD",
                                            all_categorical() ~ "n (%)")) %>%
                tab_format())

@@ -233,7 +233,7 @@ input_mv <-
   map_dfr(~ tidy(coxph(reformulate(.x, opts$tab$model_obj$surv), x[[1]])))
 
 input_mv <-
-  unique(filter(input_mv, p.value <= 0.05)) %>% 
+  unique(filter(input_mv, p.value <= opts$set$p_seuil)) %>% 
   mutate(term = str_extract(term, ".+(?=[:upper:][:lower:])|.+(?=$)"))
 
 opts_tab_model <-

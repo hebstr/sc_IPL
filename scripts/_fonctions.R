@@ -368,7 +368,8 @@ x <- x %>% modify_footnote(everything() ~ NA, abbreviation = TRUE)
   x %>% add_overall() %>%
         modify_table_body(~ .x %>%
           mutate(across(contains("stat_"), ~ ifelse(str_starts(., "0"), "—", .)))) %>%
-        modify_header(c(stat_1, stat_2) ~ "**{level}<br>(n={n}, {style_percent(p)}%)**") %>%
+        modify_header(stat_0 ~ "**Total<br>(n={N})**",
+                      c(stat_1, stat_2) ~ "**{level}<br>(n={n}, {style_percent(p)}%)**") %>%
         modify_footnote(everything() ~ NA)
   
   assign(".n", abbr(n ~ "number of events"), envir = .GlobalEnv)

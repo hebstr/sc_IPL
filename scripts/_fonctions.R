@@ -168,16 +168,16 @@ as_gt(x) %>%
 
 if(sum(grep("coef", names(x[[1]]))) >= 1)
 x %>%
-    tab_footnote(c(eval(opts$tab$note$strata), .opts_note_mv, opts$tab$note$p,
-                   str_abb(.ref, .estim, .estim_ajust, opts$abb$CI, opts$tab$abb))) %>%
-    tab_footnote(opts$tab$note$ajust,
-                 cells_column_labels(p.value_2))
+tab_footnote(c(eval(opts$tab$note$strata), .opts_note_mv, opts$tab$note$p,
+               str_abb(.ref, .estim, .estim_ajust, opts$abb$CI, opts$tab$abb))) %>%
+tab_footnote(opts$tab$note$ajust,
+             cells_column_labels(p.value_2))
 
 else
 x %>% 
-  tab_footnote(c(opts$tab$note$p, str_abb(.n, .SD, opts$tab$abb))) %>% 
-  tab_footnote(opts$tab$note$vargrp,
-               cells_body(columns = label, rows = variable %in% opts$tab$vargrp$labels))
+tab_footnote(c(opts$tab$note$p, str_abb(.n, .SD, opts$tab$abb))) %>% 
+tab_footnote(opts$tab$note$vargrp,
+             cells_body(columns = label, rows = variable %in% opts$tab$vargrp$labels))
 
 }
 

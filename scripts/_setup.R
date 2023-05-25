@@ -18,8 +18,8 @@ library(tidycmprsk)
 library(webshot)
 
 rm(list = ls())
-#load("XXX/Julien/dfp_excl7_09-17.RData")
-#setwd("XXX/Julien/IPL")
+load("C:/Users/33675/Desktop/IPL/.sca_09-17.RData")
+setwd("C:/Users/33675/Desktop/IPL")
 source("scripts/_fonctions.R")
 
 opts_set(suivi_an = 1, fdr = FALSE)
@@ -61,7 +61,7 @@ tibble(date_point = c("1 Year", paste(c(2:5), "Years")),
        title = glue("**Figure 1.** Cumulative Incidence of a First Recurrent Acute Coronary Syndrome
                   {date_point} After the Incident Episode."),
        note_1 = glue("The time to events was estimated by the Kaplan-Meier method. Data were censored
-                     at {str_to_lower(date_point)} after the first event.No data were censored
+                     at {str_to_lower(date_point)} after the first event. No data were censored
                      before the date of point."),
        note_suppl = c(glue("Three events (one in {str_to_lower(opts$set$lab$sex_f)}, two in {str_to_lower(opts$set$lab$sex_m)})
                          occured at the date of point, which is why the number at risk remained unequal to the total

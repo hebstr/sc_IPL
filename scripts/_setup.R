@@ -18,8 +18,8 @@ library(tidycmprsk)
 library(webshot)
 
 rm(list = ls())
-load("C:/Users/33675/Desktop/IPL/.sca_09-17.RData")
-setwd("C:/Users/33675/Desktop/IPL")
+#load("xxx/Desktop/Julien/dfp_excl7_09-17.RData")
+#setwd("xxx/Desktop/Julien")
 source("scripts/_fonctions.R")
 
 opts_set(suivi_an = 1, fdr = FALSE)

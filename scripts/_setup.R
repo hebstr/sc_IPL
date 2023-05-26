@@ -18,9 +18,9 @@ library(tidycmprsk)
 library(webshot)
 
 rm(list = ls())
-#load("xxx/Desktop/Julien/dfp_excl7_09-17.RData")
-#setwd("xxx/Desktop/Julien")
-source("scripts/_fonctions.R")
+load("~/JULIEN/dfp_excl7_09-17.RData")
+setwd("~/JULIEN/IPL")
+source("../fonctions/_fonctions.R")
 
 opts_set(suivi_an = 1, fdr = FALSE)
 
@@ -44,8 +44,10 @@ opts_tab <-
            uv = c("sexe", "age_incr", "lieu_recueil", "sympt_type", opts_vargrp$maj_comp, "acs_type", "pontage_pdt2",
                   "pontage_sortie", "angiop_pdt2", "angiop_sortie"),
            vargrp = opts_vargrp$maj_comp,
+           vargrp_suppl = opts_vargrp$fdr,
+           before = "sympt_type",
            abb = c(ACS, STEMI, NSTEMI),
-           abb_fdr = BMI,
+           abb_suppl = BMI,
            note = list(p = "P-values were bolded if less than or equal to 0.05.",
                        vargrp = "At least one occurrence.",
                        strata = expr(glue("Multivariable Cox regression model stratified

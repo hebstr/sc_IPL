@@ -23,6 +23,6 @@ d.1[opts$tab$input$base] %>%
 
 tab_1 <- gt_template(tab_1.gts)
 
-#tab_data(tab_1.gts); tab_data(tab_1)
+tab_data(tab_1.gts); tab_data(tab_1)
 
 output(tab_1)

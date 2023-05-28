@@ -61,7 +61,7 @@ tibble(date_point = c("1 Year", paste(c(2:5), "Years")),
        ylab = "Cumulative Incidence (%)",
        title = glue("**Figure 1.** Cumulative Incidence of a First Recurrent Acute Coronary Syndrome
                     {date_point} After the Incident Episode."),
-       note_1 = glue("The time to events was estimated by the Kaplan-Meier method. Data were censored
+       note = glue("The time to events was estimated by the Kaplan-Meier method. Data were censored
                      at {str_to_lower(date_point)} after the first event. No data were censored
                      before the date of point."),
        note_suppl = c(glue("Three events (one in {str_to_lower(opts$set$lab$sex_f)}, two in {str_to_lower(opts$set$lab$sex_m)})
@@ -247,7 +247,7 @@ list(uv = coxph(reformulate("sexe",
     
     pct_na <- style_percent(length(model$na.action)/(model$n + length(model$na.action)), symbol = TRUE, digits = 1)
     x <- glue("{model$nevent} events included on {model$n} total observations,
-            {length(model$na.action)} ({pct_na}) observations were deleted for missing.")
+              {length(model$na.action)} ({pct_na}) observations were deleted for missing.")
     assign(".opts_note_mv", x, envir = .GlobalEnv)
     
     }
@@ -255,8 +255,7 @@ list(uv = coxph(reformulate("sexe",
 note_mv(opts_tab_model$mv)
 assign("opts", append(opts, list(model = opts_tab_model), after = 3), envir = .GlobalEnv)
 
-print(list(check_pop,
-           glue("\n", "multivariable model:\n{.opts_note_mv}", "\n")))
+check_pop
 
 }
 

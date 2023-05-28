@@ -35,7 +35,7 @@ fig_1 <-
 fig_1_plot %>% 
   ggcuminc(theme = theme_cuminc(margin_title = margin(45,0, opts$fig$mg_bottom_title, 0))) +
   labs(caption = glue("{opts$fig$title}<br>
-                      <span style='font-size:7pt'> {opts$fig$note_1} {opts$fig$note_suppl} {opts$fig$abb}</span>")) +
+                      <span style='font-size:7pt'> {opts$fig$note} {opts$fig$note_suppl} {opts$fig$abb}</span>")) +
   scale_color_manual(values = c(opts$set$color$front_dark, opts$set$color$ref)) +
   scale_ggsurvfit(x_scales = list(name = opts$fig$xlab,
                                   breaks = seq(0, opts$set$suivi_jr, by = (365/12) * opts$fig$x_break),

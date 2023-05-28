@@ -43,11 +43,8 @@ opts_tab <-
   opts_tab(base = c("sexe", "age_cont","sympt_type", opts_vargrp$maj_comp, "acs_type", "pontage_pdt2", "angiop_pdt2"),
            uv = c("sexe", "age_incr", "lieu_recueil", "sympt_type", opts_vargrp$maj_comp, "acs_type", "pontage_pdt2",
                   "pontage_sortie", "angiop_pdt2", "angiop_sortie"),
-           vargrp = opts_vargrp$maj_comp,
-           vargrp_suppl = opts_vargrp$fdr,
-           before = "sympt_type",
-           abb = c(ACS, STEMI, NSTEMI),
-           abb_suppl = BMI,
+           vargrp = opts_vargrp$maj_comp, vargrp_suppl = opts_vargrp$fdr, before_var = "sympt_type",
+           abb = c(ACS, STEMI, NSTEMI), abb_suppl = BMI, before_abb = ACS,
            note = list(p = "P-values were bolded if less than or equal to 0.05.",
                        vargrp = "At least one occurrence.",
                        strata = expr(glue("Multivariable Cox regression model stratified
@@ -60,14 +57,16 @@ tibble(date_point = c("1 Year", paste(c(2:5), "Years")),
        y_break = c(0.01, rep(0.02, 4)),
        mg_bottom_title = c(-35, rep(-28, 4)),
        width = 6.95, height = 4.10,
+       xlab = "Months Since the Incident Episode",
+       ylab = "Cumulative Incidence (%)",
        title = glue("**Figure 1.** Cumulative Incidence of a First Recurrent Acute Coronary Syndrome
-                  {date_point} After the Incident Episode."),
+                    {date_point} After the Incident Episode."),
        note_1 = glue("The time to events was estimated by the Kaplan-Meier method. Data were censored
                      at {str_to_lower(date_point)} after the first event. No data were censored
                      before the date of point."),
        note_suppl = c(glue("Three events (one in {str_to_lower(opts$set$lab$sex_f)}, two in {str_to_lower(opts$set$lab$sex_m)})
-                         occured at the date of point, which is why the number at risk remained unequal to the total
-                         number at risk minus the number of events at this time."), rep("", 4)),
+                           occured at the date of point, which is why the number at risk remained unequal to the total
+                           number at risk minus the number of events at this time."), rep("", 4)),
        abb = str_abb(with(opts_abb, c(CI, IR))),
        stat = "Hazard ratio for recurrence {opts$set$ci$label}: {select(fig_1_test, last_col())}
               Log rank p={round(p.value, 3)}") %>%

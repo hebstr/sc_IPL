@@ -43,7 +43,7 @@ filter(d, rec == 1 & tt_rec <= opts$set$suivi_jr) %>%
 #                        rename(p.value = p.value.y)) %>%
 #      modify_header(p.value ~ "**p interaction<br>(sexe x episode)**")
 
-tab_inter <- gt_template(tab_inter.gts, title)
+tab_inter <- gt_template(tab_inter.gts)
 
 #tab_data(tab_s.gts); tab_data(tab_s)
 

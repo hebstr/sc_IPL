@@ -37,11 +37,11 @@ fig_1_plot %>%
   labs(caption = glue("{opts$fig$title}<br>
                       <span style='font-size:7pt'> {opts$fig$note_1} {opts$fig$note_suppl} {opts$fig$abb}</span>")) +
   scale_color_manual(values = c(opts$set$color$front_dark, opts$set$color$ref)) +
-  scale_ggsurvfit(x_scales = list(name = "Months Since the Incident Episode",
+  scale_ggsurvfit(x_scales = list(name = opts$fig$xlab,
                                   breaks = seq(0, opts$set$suivi_jr, by = (365/12) * opts$fig$x_break),
                                   label = seq(0, opts$set$suivi_an * 12, by = opts$fig$x_break),
                                   limits = c(opts$set$suivi_jr * -0.01, opts$set$suivi_jr * 1.01)),
-                  y_scales = list(name = "Cumulative Incidence (%)",
+                  y_scales = list(name = opts$fig$ylab,
                                   breaks = seq(0, max(fig_1_tab$estimate) * 1.2, by = opts$fig$y_break),
                                   limits = c(0, max(fig_1_tab$estimate) * 1.15),
                                   label = label_percent(accuracy = 1, suffix = ""))) +

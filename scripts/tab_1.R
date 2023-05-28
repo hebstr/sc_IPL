@@ -21,7 +21,7 @@ d.1[opts$tab$input$base] %>%
   add_stat_label(label = all_continuous() ~ "mean±SD") %>% 
   tab_format()
 
-tab_1 <- gt_template(tab_1.gts, title)
+tab_1 <- gt_template(tab_1.gts)
 
 #tab_data(tab_1.gts); tab_data(tab_1)
 
